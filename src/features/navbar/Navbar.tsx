@@ -14,8 +14,12 @@ import { mainTheme } from '../../themes/mainTheme';
 const styles = {
 	navbar: {
 		display: 'flex',
+		height: '10vh',
 		backgroundColor: mainTheme.palette.primary.main,
 		color: mainTheme.palette.primary.contrastText,
+	},
+	toolbar: {
+		height: '100%',
 	},
 	menuBtn: {
 		display: { sm: 'none' },
@@ -44,32 +48,29 @@ export default function DrawerAppBar() {
   };
 
   return (
-		<>
-      <AppBar component="nav" sx={styles.navbar}>
-        <Toolbar>
-          <IconButton onClick={handleDrawerToggle} sx={styles.menuBtn}>
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={styles.title}>
-            Tic Tac Toe
-          </Typography>
-          <Box sx={styles.navItems}>
-            {navItems.map((item) => (
-              <Button key={item} sx={styles.navBtn}>
-                {item}
-              </Button>
-            ))}
-          </Box>
-        </Toolbar>
-				<nav>
-					<NavDrawer
-						navItems={navItems} 
-						mobileOpen={mobileOpen} 
-						handleDrawerToggle={handleDrawerToggle}
-					/>
-				</nav>
-      </AppBar>
-      
-    </>
+		<AppBar component="nav" sx={styles.navbar}>
+			<Toolbar sx={styles.toolbar}>
+				<IconButton onClick={handleDrawerToggle} sx={styles.menuBtn}>
+					<MenuIcon />
+				</IconButton>
+				<Typography variant="h6" component="div" sx={styles.title}>
+					Tic Tac Toe
+				</Typography>
+				<Box sx={styles.navItems}>
+					{navItems.map((item) => (
+						<Button key={item} sx={styles.navBtn}>
+							{item}
+						</Button>
+					))}
+				</Box>
+			</Toolbar>
+			<nav>
+				<NavDrawer
+					navItems={navItems} 
+					mobileOpen={mobileOpen} 
+					handleDrawerToggle={handleDrawerToggle}
+				/>
+			</nav>
+		</AppBar>
   );
 }

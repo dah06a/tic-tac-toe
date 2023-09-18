@@ -14,7 +14,7 @@ const styles = {
 		display: { 
 			xs: 'block', 
 			sm: 'none',
-			textAlign: 'center'
+			textAlign: 'center',
 		},
 		'& .MuiDrawer-paper': { 
 			boxSizing: 'border-box', 
@@ -24,7 +24,10 @@ const styles = {
 		},
 	},
 	title: {
-		my: 3
+		my: 3,
+	},
+	divider: {
+		borderTop: '3px solid',
 	}
 };
 
@@ -49,7 +52,7 @@ export default function NavDrawer(props: NavDrawerProps) {
 				<Typography variant="h6" sx={styles.title}>
 					Tic Tac Toe
 				</Typography>
-				<Divider />
+				<Divider sx={styles.divider} />
 				<List>
 					{navItems.map((item) => (
 						<ListItem key={item} disablePadding>
