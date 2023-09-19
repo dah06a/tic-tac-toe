@@ -1,47 +1,56 @@
-import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+
+import Square from './Square';
 import { mainTheme } from '../../themes/mainTheme';
 
-function FormRow() {
-  return (
-    <>
-      <Grid item xs={4}>
-        test1
-      </Grid>
-      <Grid item xs={4}>
-        test2
-      </Grid>
-      <Grid item xs={4}>
-        test3
-      </Grid>
-    </>
-  );
-}
 
 const styles = {
-	box: {
-		width: { xs: '100%', sm: '75%', md: '50%' },
-		height: { xs: '75%' },
-		backgroundColor: mainTheme.palette.primary.light,
+	board: {
+		width: { xs: '90vmin', sm: '60vmin' },
+		height: { xs: '90vmin', sm: '60vmin' },
+		backgroundColor: mainTheme.palette.grey[300],
+		color: mainTheme.palette.primary.contrastText,
 		borderRadius: '10px',
+		alignItems: 'center',
+	},
+	row: {
+		height: { xs: '30vmin', sm: '20vmin' },
 	}
 }
 
 export default function Board() {
+
+	const tempSquares: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 	
 	return (
-		<Box sx={styles.box}>
-      <Grid container spacing={3}>
-        <Grid container item spacing={3}>
-          <FormRow />
-        </Grid>
-        <Grid container item spacing={3}>
-          <FormRow />
-        </Grid>
-        <Grid container item spacing={3}>
-          <FormRow />
-        </Grid>
-      </Grid>
-    </Box>
+		<Grid container sx={styles.board}>
+			<Grid container item sx={styles.row}>
+				{tempSquares.slice(0, 3).map(item => (
+					<Square 
+					key={item}
+					status='X'
+					pos={item}
+				/>
+				))}
+			</Grid>
+			<Grid container item sx={styles.row}>
+			{tempSquares.slice(3, 6).map(item => (
+					<Square 
+					key={item}
+					status='O'
+					pos={item}
+				/>
+				))}
+			</Grid>
+			<Grid container item sx={styles.row}>
+				{tempSquares.slice(6).map(item => (
+						<Square 
+						key={item}
+						status={null}
+						pos={item}
+					/>
+				))}			
+			</Grid>
+		</Grid>
 	);
 }

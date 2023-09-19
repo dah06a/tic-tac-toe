@@ -15,5 +15,16 @@ export const mainTheme = createTheme({
         dark: orange[800],
         contrastText: grey[800],
       },
+      grey: {
+        100: grey[100],
+        300: grey[300],
+        500: grey[500],
+        700: grey[700],
+        900: grey[900],
+      },
+      common: {
+        black: '#000',
+        white: '#fff',
+      },
     },
   });

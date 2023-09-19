@@ -5,7 +5,7 @@ const styles = {
     container: {
         display: 'flex',
         mt: '10vh',
-        px: { xs: 0, sm: '24px' },
+        px: { xs: '12px', sm: '24px' },
         height: '90vh',
         justifyContent: 'center',
         alignItems: 'center',
