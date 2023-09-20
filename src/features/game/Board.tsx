@@ -1,8 +1,12 @@
-import Grid from '@mui/material/Grid';
-
-import Square from './Square';
+import { useEffect } from 'react';
 import { useAppSelector } from '../../app/hooks';
 import { selectGameData } from './gameSlice';
+import { checkGameOver } from '../../utils/checkGameOver';
+
+import Square from './Square';
+
+import Grid from '@mui/material/Grid';
+
 
 import { mainTheme } from '../../themes/mainTheme';
 
@@ -22,14 +26,16 @@ const styles = {
 }
 
 export default function Board() {
-
-	const tempSquares: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 	const gameData = useAppSelector(selectGameData);
 	const row1Data = gameData.slice(0, 3);
 	const row2Data = gameData.slice(3, 6);
 	const row3Data = gameData.slice(6);
 
-	console.log(gameData);
+	useEffect(() => {
+		if (checkGameOver(gameData)) {
+			alert('GAME OVER');
+		}
+	}, [gameData]);
 	
 	return (
 		<Grid container sx={styles.board}>
