@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
-import { useAppSelector } from '../../app/hooks';
-import { selectGameData } from './gameSlice';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import { selectGameData, selectPlayerTurn, takeTurn, resetGame } from './gameSlice';
 import { checkGameOver } from '../../utils/checkGameOver';
+import { computerPlayerChoice } from '../../utils/computerPlayerChoice';
 
 import Square from './Square';
 
@@ -27,15 +28,29 @@ const styles = {
 
 export default function Board() {
 	const gameData = useAppSelector(selectGameData);
+	const isPlayerTurn = useAppSelector(selectPlayerTurn);
+	const isGameOver = checkGameOver(gameData);
+	const dispatch = useAppDispatch();
+
 	const row1Data = gameData.slice(0, 3);
 	const row2Data = gameData.slice(3, 6);
 	const row3Data = gameData.slice(6);
 
 	useEffect(() => {
-		if (checkGameOver(gameData)) {
-			alert('GAME OVER');
+		if (isGameOver) {
+			console.log('GAME OVER');
+			setTimeout(() => {
+				dispatch(resetGame());
+			}, 1000);
 		}
-	}, [gameData]);
+		if (!isPlayerTurn && !isGameOver) {
+			const newPos = computerPlayerChoice(gameData);
+			dispatch(takeTurn({
+				pos: newPos,
+				val: 'O',
+			}));
+		}
+	});
 	
 	return (
 		<Grid container sx={styles.board}>
