@@ -1,6 +1,9 @@
 import Grid from '@mui/material/Grid';
 
 import Square from './Square';
+import { useAppSelector } from '../../app/hooks';
+import { selectGameData } from './gameSlice';
+
 import { mainTheme } from '../../themes/mainTheme';
 
 
@@ -21,33 +24,39 @@ const styles = {
 export default function Board() {
 
 	const tempSquares: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+	const gameData = useAppSelector(selectGameData);
+	const row1Data = gameData.slice(0, 3);
+	const row2Data = gameData.slice(3, 6);
+	const row3Data = gameData.slice(6);
+
+	console.log(gameData);
 	
 	return (
 		<Grid container sx={styles.board}>
 			<Grid container item sx={styles.row}>
-				{tempSquares.slice(0, 3).map(item => (
+				{row1Data.map((val, idx) => (
 					<Square 
-					key={item}
-					status='X'
-					pos={item}
+					key={idx}
+					status={val}
+					pos={idx}
 				/>
 				))}
 			</Grid>
 			<Grid container item sx={styles.row}>
-			{tempSquares.slice(3, 6).map(item => (
+			{row2Data.map((val, idx) => (
 					<Square 
-					key={item}
-					status='O'
-					pos={item}
+					key={idx}
+					status={val}
+					pos={idx+3}
 				/>
 				))}
 			</Grid>
 			<Grid container item sx={styles.row}>
-				{tempSquares.slice(6).map(item => (
-						<Square 
-						key={item}
-						status={null}
-						pos={item}
+				{row3Data.map((val, idx) => (
+					<Square 
+					key={idx}
+					status={val}
+					pos={idx+6}
 					/>
 				))}			
 			</Grid>

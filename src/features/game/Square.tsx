@@ -5,6 +5,9 @@ import IconButton from '@mui/material/IconButton';
 import Close from '@mui/icons-material/Close';
 import TripOrigin from '@mui/icons-material/TripOrigin';
 
+import { useAppDispatch } from '../../app/hooks';
+import { takeTurn } from './gameSlice';
+
 import { mainTheme } from '../../themes/mainTheme';
 
 type SquareProps = {
@@ -14,8 +17,17 @@ type SquareProps = {
 
 export default function Square(props: SquareProps) {
     const { status, pos } = props;
-    const gridColor = mainTheme.palette.grey[500];
+    const dispatch = useAppDispatch();
 
+    function handleTurn() {
+        console.log(pos);
+        dispatch(takeTurn({
+            pos: pos,
+            val: 'X',
+        }));
+    }
+
+    const gridColor = mainTheme.palette.grey[500];
     const styles = {
         square: {
             width: '100%',
@@ -49,7 +61,7 @@ export default function Square(props: SquareProps) {
 
     return (
         <Grid item xs={4} sx={styles.square}>
-            <IconButton size='large' sx={styles.iconBtn}>
+            <IconButton size='large' sx={styles.iconBtn} onClick={handleTurn}>
                 {icon}
             </IconButton>
         </Grid>
