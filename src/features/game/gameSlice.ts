@@ -4,12 +4,14 @@ import { RootState } from '../../app/store';
 export type SquareState = 'X' | 'O' | null;
 export type GameState = { 
 	gameData: SquareState[], 
-	isPlayerTurn: boolean 
+	isPlayerTurn: boolean,
+  isPlayerXs: boolean,
 }
 
 const initialState: GameState = {
     gameData: [null, null, null, null, null, null, null, null, null],
-		isPlayerTurn: true
+		isPlayerTurn: true,
+    isPlayerXs: true,
 };
 
 export const gameSlice = createSlice({
@@ -20,15 +22,20 @@ export const gameSlice = createSlice({
       state.gameData[action.payload.pos] = action.payload.val;
 			state.isPlayerTurn = !state.isPlayerTurn;
     },
-		resetGame: (state) => {
-			state.gameData = initialState.gameData;
-		}
+    newGame: (state) => {
+      state.gameData = initialState.gameData;
+      const newIsPlayerXs = !state.isPlayerXs;
+      state.isPlayerXs = newIsPlayerXs;
+      state.isPlayerTurn = newIsPlayerXs;
+    },
+		resetGame: () => initialState,
   },
 });
 
-export const { takeTurn, resetGame } = gameSlice.actions;
+export const { takeTurn, newGame, resetGame } = gameSlice.actions;
 
 export const selectGameData = (state: RootState) => state.game.gameData;
 export const selectPlayerTurn = (state: RootState) => state.game.isPlayerTurn;
+export const selectPlayerXs = (state: RootState) => state.game.isPlayerXs;
 
 export default gameSlice.reducer;

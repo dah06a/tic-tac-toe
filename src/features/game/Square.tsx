@@ -1,15 +1,13 @@
 import { ReactElement } from 'react';
-
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { takeTurn, SquareState, selectPlayerTurn } from './gameSlice';
+import { takeTurn, SquareState, selectPlayerTurn, selectPlayerXs } from './gameSlice';
+import { mainTheme } from '../../themes/mainTheme';
 
 import { SvgIconProps } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Close from '@mui/icons-material/Close';
 import TripOrigin from '@mui/icons-material/TripOrigin';
-
-import { mainTheme } from '../../themes/mainTheme';
 
 type SquareProps = {
 status: SquareState;
@@ -18,17 +16,24 @@ pos: number;
 
 export default function Square(props: SquareProps) {
 	const { status, pos } = props;
-	const isPlayerTurn = useAppSelector(selectPlayerTurn);
+	const isPlayerXs: boolean = useAppSelector(selectPlayerXs);
+	const isPlayerTurn: boolean = useAppSelector(selectPlayerTurn);
+	
 	const dispatch = useAppDispatch();
 
 	function handleTurn() {
+		const playerSymbol: ('X' | 'O') = isPlayerXs ? 'X' : 'O';
 		dispatch(takeTurn({
 			pos: pos,
-			val: 'X',
+			val: playerSymbol,
 		}));
 	}
 
-	const gridColor = mainTheme.palette.grey[500];
+	const gridColor: string = mainTheme.palette.grey[500];
+	const iconColor = (isPlayerXs && status === 'X') || (!isPlayerXs && status === 'O')
+		? mainTheme.palette.primary.main
+		: mainTheme.palette.secondary.main
+	;
 	const styles = {
 		square: {
 			width: '100%',
@@ -45,11 +50,12 @@ export default function Square(props: SquareProps) {
 			width: '90%',
 			height: '90%',
 			'&:hover': {
-					backgroundColor: mainTheme.palette.grey[500],
+				backgroundColor: mainTheme.palette.grey[500],
 			},
 		},
 		icon: {
 			fontSize: { xs: 60, sm: 100 },
+			color: iconColor,
 		},
 	}
 

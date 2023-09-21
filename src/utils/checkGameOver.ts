@@ -46,7 +46,7 @@ export function checkGameOver(g: ('X' | 'O' | null)[]) {
 
     // Check for tie or continue game
     for (const square of g) {
-        if (!square) return false;
+        if (!square) return '';
     }
     return 'tie';
 }

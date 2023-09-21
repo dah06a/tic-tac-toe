@@ -1,16 +1,12 @@
 import { useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { selectGameData, selectPlayerTurn, takeTurn, resetGame } from './gameSlice';
+import { selectGameData, selectPlayerTurn, selectPlayerXs, takeTurn, resetGame, newGame, SquareState } from './gameSlice';
 import { checkGameOver } from '../../utils/checkGameOver';
 import { computerPlayerChoice } from '../../utils/computerPlayerChoice';
-
+import { mainTheme } from '../../themes/mainTheme';
 import Square from './Square';
 
 import Grid from '@mui/material/Grid';
-
-
-import { mainTheme } from '../../themes/mainTheme';
-
 
 const styles = {
 	board: {
@@ -27,27 +23,31 @@ const styles = {
 }
 
 export default function Board() {
-	const gameData = useAppSelector(selectGameData);
-	const isPlayerTurn = useAppSelector(selectPlayerTurn);
-	const isGameOver = checkGameOver(gameData);
-	const dispatch = useAppDispatch();
+	const gameData: SquareState[] = useAppSelector(selectGameData);
+	const isPlayerTurn: boolean = useAppSelector(selectPlayerTurn);
+	const isPlayerXs: boolean = useAppSelector(selectPlayerXs);
+	const gameOverStatus: string = checkGameOver(gameData);
 
 	const row1Data = gameData.slice(0, 3);
 	const row2Data = gameData.slice(3, 6);
 	const row3Data = gameData.slice(6);
 
+	const dispatch = useAppDispatch();
+
 	useEffect(() => {
-		if (isGameOver) {
+		if (gameOverStatus) {
 			console.log('GAME OVER');
+			console.log('Game goes to:', gameOverStatus);
 			setTimeout(() => {
-				dispatch(resetGame());
+				dispatch(newGame());
 			}, 1000);
 		}
-		if (!isPlayerTurn && !isGameOver) {
-			const newPos = computerPlayerChoice(gameData, 'O');
+		if (!isPlayerTurn && !gameOverStatus) {
+			const computerSymbol: ('X' | 'O') = isPlayerXs ? 'O' : 'X';
+			const newPosition = computerPlayerChoice(gameData, computerSymbol);
 			dispatch(takeTurn({
-				pos: newPos,
-				val: 'O',
+				pos: newPosition,
+				val: computerSymbol,
 			}));
 		}
 	});
