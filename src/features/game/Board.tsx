@@ -44,7 +44,7 @@ export default function Board() {
 			}, 1000);
 		}
 		if (!isPlayerTurn && !isGameOver) {
-			const newPos = computerPlayerChoice(gameData);
+			const newPos = computerPlayerChoice(gameData, 'O');
 			dispatch(takeTurn({
 				pos: newPos,
 				val: 'O',
