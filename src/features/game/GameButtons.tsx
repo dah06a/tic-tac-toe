@@ -13,7 +13,7 @@ const styles = {
         my: 3,
         justifyContent: 'space-between',
         alignItems: 'center',
-        width: { xs: '90vmin', sm: '60vmin' },
+        width: '100%',
     },
     resetBtn: {
         width: '48%',

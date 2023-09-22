@@ -16,6 +16,7 @@ const styles = {
 		color: mainTheme.palette.primary.contrastText,
 		borderRadius: '10px',
 		alignItems: 'center',
+		mx: 'auto',
 	},
 	row: {
 		height: { xs: '30vmin', sm: '20vmin' },
