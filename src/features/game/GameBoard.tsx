@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { selectGameData, selectPlayerTurn, selectPlayerXs, takeTurn, resetGame, newGame, SquareState } from './gameSlice';
+import { selectGameData, selectPlayerTurn, selectPlayerXs, takeTurn, SquareState } from './gameSlice';
 import { checkGameOver } from '../../utils/checkGameOver';
 import { computerPlayerChoice } from '../../utils/computerPlayerChoice';
 import { mainTheme } from '../../themes/mainTheme';
-import Square from './Square';
+import GameSquare from './GameSquare';
 
 import Grid from '@mui/material/Grid';
 
@@ -22,7 +22,7 @@ const styles = {
 	}
 }
 
-export default function Board() {
+export default function GameBoard() {
 	const gameData: SquareState[] = useAppSelector(selectGameData);
 	const isPlayerTurn: boolean = useAppSelector(selectPlayerTurn);
 	const isPlayerXs: boolean = useAppSelector(selectPlayerXs);
@@ -38,9 +38,6 @@ export default function Board() {
 		if (gameOverStatus) {
 			console.log('GAME OVER');
 			console.log('Game goes to:', gameOverStatus);
-			setTimeout(() => {
-				dispatch(newGame());
-			}, 1000);
 		}
 		if (!isPlayerTurn && !gameOverStatus) {
 			const computerSymbol: ('X' | 'O') = isPlayerXs ? 'O' : 'X';
@@ -56,7 +53,7 @@ export default function Board() {
 		<Grid container sx={styles.board}>
 			<Grid container item sx={styles.row}>
 				{row1Data.map((val, idx) => (
-					<Square 
+					<GameSquare 
 					key={idx}
 					status={val}
 					pos={idx}
@@ -65,7 +62,7 @@ export default function Board() {
 			</Grid>
 			<Grid container item sx={styles.row}>
 			{row2Data.map((val, idx) => (
-					<Square 
+					<GameSquare 
 					key={idx}
 					status={val}
 					pos={idx+3}
@@ -74,7 +71,7 @@ export default function Board() {
 			</Grid>
 			<Grid container item sx={styles.row}>
 				{row3Data.map((val, idx) => (
-					<Square 
+					<GameSquare 
 					key={idx}
 					status={val}
 					pos={idx+6}

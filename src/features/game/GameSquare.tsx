@@ -14,7 +14,7 @@ status: SquareState;
 pos: number;
 }
 
-export default function Square(props: SquareProps) {
+export default function GameSquare(props: SquareProps) {
 	const { status, pos } = props;
 	const isPlayerXs: boolean = useAppSelector(selectPlayerXs);
 	const isPlayerTurn: boolean = useAppSelector(selectPlayerTurn);
@@ -32,7 +32,7 @@ export default function Square(props: SquareProps) {
 	const gridColor: string = mainTheme.palette.grey[500];
 	const iconColor = (isPlayerXs && status === 'X') || (!isPlayerXs && status === 'O')
 		? mainTheme.palette.primary.main
-		: mainTheme.palette.secondary.main
+		: mainTheme.palette.secondary.dark
 	;
 	const styles = {
 		square: {

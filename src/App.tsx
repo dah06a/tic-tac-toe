@@ -1,6 +1,7 @@
 import Navbar from './features/navbar/Navbar';
-import GameContainer from './gameContainer/GameContainer';
-import Board from './features/game/Board';
+import GameContainer from './features/game/GameContainer';
+import GameBoard from './features/game/GameBoard';
+import GameButtons from './features/game/GameButtons';
 import './App.css';
 
 function App() {
@@ -8,7 +9,8 @@ function App() {
     <div className="App">
       <Navbar />
       <GameContainer>
-        <Board />
+        <GameButtons />
+        <GameBoard />
       </GameContainer>
     </div>
   );

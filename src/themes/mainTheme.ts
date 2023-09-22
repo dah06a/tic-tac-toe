@@ -10,9 +10,9 @@ export const mainTheme = createTheme({
         contrastText: grey[50],
       },
       secondary: {
-        light: orange[300],
-        main: orange[500],
-        dark: orange[800],
+        light: orange[100],
+        main: orange[300],
+        dark: orange[500],
         contrastText: grey[800],
       },
       grey: {

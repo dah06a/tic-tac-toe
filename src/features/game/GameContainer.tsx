@@ -4,10 +4,10 @@ import Container from '@mui/material/Container';
 const styles = {
     container: {
         display: 'flex',
+        flexDirection: 'column',
         mt: '10vh',
         px: { xs: '12px', sm: '24px' },
         height: '90vh',
-        justifyContent: 'center',
         alignItems: 'center',
     }
 }
