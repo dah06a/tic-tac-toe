@@ -17,19 +17,16 @@ const styles = {
     },
     resetBtn: {
         width: '48%',
-        color: mainTheme.palette.secondary.main,
-        borderColor: mainTheme.palette.secondary.main,
+        backgroundColor: mainTheme.palette.secondary.dark,
         '&:hover': {
-            backgroundColor: mainTheme.palette.secondary.dark,
-            borderColor: mainTheme.palette.secondary.dark,
-            color: mainTheme.palette.grey[50],
+            backgroundColor: mainTheme.palette.secondary.main,
         }
     },
     newGameBtn: {
         width: '48%',
-        backgroundColor: mainTheme.palette.primary.light,
+        backgroundColor: mainTheme.palette.primary.main,
         '&:hover': {
-            backgroundColor: mainTheme.palette.primary.main,
+            backgroundColor: mainTheme.palette.primary.dark,
         }
     }
 }
@@ -40,7 +37,7 @@ export default function GameButtons() {
     return (
         <Box sx={styles.box}>
             <Button 
-                variant='outlined' 
+                variant='contained' 
                 startIcon={<RestartAlt />} 
                 sx={styles.resetBtn}
                 onClick={() => dispatch(resetGame())}

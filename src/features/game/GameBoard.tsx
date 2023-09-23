@@ -1,6 +1,13 @@
 import { useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { selectGameData, selectPlayerTurn, selectPlayerXs, takeTurn, SquareState } from './gameSlice';
+import { 
+	selectGameData, 
+	selectPlayerTurn, 
+	selectPlayerXs, 
+	takeTurn, 
+	updateScore, 
+	SquareState,
+} from './gameSlice';
 import { checkGameOver } from '../../utils/checkGameOver';
 import { computerPlayerChoice } from '../../utils/computerPlayerChoice';
 import { mainTheme } from '../../themes/mainTheme';
@@ -39,6 +46,10 @@ export default function GameBoard() {
 		if (gameOverStatus) {
 			console.log('GAME OVER');
 			console.log('Game goes to:', gameOverStatus);
+			if (gameOverStatus !== 'tie') {
+				const didPlayerWin: boolean = (isPlayerXs && gameOverStatus === 'X') || (!isPlayerXs && gameOverStatus === 'O');
+				dispatch(updateScore({ isPlayerWinner: didPlayerWin }));
+			}
 		}
 		if (!isPlayerTurn && !gameOverStatus) {
 			const computerSymbol: ('X' | 'O') = isPlayerXs ? 'O' : 'X';
