@@ -5,8 +5,11 @@ import {
 	selectPlayerTurn, 
 	selectPlayerXs, 
 	takeTurn, 
+	updateStatus,
 	updateScore, 
 	SquareState,
+	GameResult,
+	GameStatus,
 } from './gameSlice';
 import { checkGameOver } from '../../utils/checkGameOver';
 import { computerPlayerChoice } from '../../utils/computerPlayerChoice';
@@ -36,20 +39,27 @@ export default function GameBoard() {
 	const isPlayerXs: boolean = useAppSelector(selectPlayerXs);
 	const gameOverStatus: string = checkGameOver(gameData);
 
-	const row1Data = gameData.slice(0, 3);
-	const row2Data = gameData.slice(3, 6);
-	const row3Data = gameData.slice(6);
+	const row1Data: SquareState[] = gameData.slice(0, 3);
+	const row2Data: SquareState[] = gameData.slice(3, 6);
+	const row3Data: SquareState[] = gameData.slice(6);
 
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		if (gameOverStatus) {
-			console.log('GAME OVER');
-			console.log('Game goes to:', gameOverStatus);
-			if (gameOverStatus !== 'tie') {
-				const didPlayerWin: boolean = (isPlayerXs && gameOverStatus === 'X') || (!isPlayerXs && gameOverStatus === 'O');
-				dispatch(updateScore({ isPlayerWinner: didPlayerWin }));
+			let gameResult: GameResult;
+			if (gameOverStatus === 'tie') {
+				gameResult = 'tie';
+			} else if ((isPlayerXs && gameOverStatus === 'X') || (!isPlayerXs && gameOverStatus === 'O')) {
+				gameResult = 'player';
+			} else {
+				gameResult = 'computer';
 			}
+			const newStatus: GameStatus = { gameOver: true, result: gameResult}
+			dispatch(updateStatus(newStatus));
+
+			const playerDidWin: boolean = gameResult === 'player';
+			dispatch(updateScore({ isPlayerWinner: playerDidWin }));
 		}
 		if (!isPlayerTurn && !gameOverStatus) {
 			const computerSymbol: ('X' | 'O') = isPlayerXs ? 'O' : 'X';
