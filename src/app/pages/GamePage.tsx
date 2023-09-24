@@ -1,5 +1,6 @@
 import GameBoard from '../../features/game/GameBoard';
 import GamePanel from '../../features/game/GamePanel';
+import GameOverlay from '../../features/game/GameOverlay';
 
 import Container from '@mui/material/Container';
 
@@ -32,6 +33,8 @@ const styles = {
 
 export default function GamePage() {
     return (
+        <>
+        <GameOverlay />
         <Container id="game-page" sx={styles.pageContainer}>
             <Container id='game-container' sx={styles.gameContainer}>
                 <GameBoard />
@@ -40,5 +43,6 @@ export default function GamePage() {
                 <GamePanel />
             </Container>
         </Container>
+        </>
     );
 }
