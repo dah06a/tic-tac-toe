@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { useAppSelector } from '../../app/hooks';
 import { GameStatus, selectGameStatus } from './gameSlice';
 import { mainTheme } from '../../themes/mainTheme';
@@ -10,6 +11,23 @@ import GppBadIcon from '@mui/icons-material/GppBad';
 
 export default function GameOverlay() {
 	const gameStatus: GameStatus = useAppSelector(selectGameStatus);
+	const [showOverlay, setShowOverlay] = useState(false);
+
+
+	useEffect(() => {
+		if (gameStatus.gameOver) {
+			setShowOverlay(true);
+
+			const overlayTimeout = setTimeout(() => {
+				setShowOverlay(false);
+			}, 3000);
+
+			return () => {
+				clearTimeout(overlayTimeout)
+			}
+		}
+	}, [gameStatus.gameOver]);
+
 	let iconColor = mainTheme.palette.grey[50];
 	if (gameStatus.result === 'player') {
 		iconColor = mainTheme.palette.primary.main;
@@ -37,8 +55,8 @@ export default function GameOverlay() {
 			flexDirection: 'column',
 			justifyContent: 'center',
 			alignItems: 'center',
-			width: '60vmin',
-			height: '60vmin',
+			width: '90vmin',
+			height: '90vmin',
 			backgroundColor: 'rgba(0, 0, 0, 0.7)',
 			zIndex: 100,
 			borderRadius: '50%',
@@ -81,7 +99,7 @@ export default function GameOverlay() {
 	return ( 
 		gameStatus.gameOver 
 			? <Box sx={styles.overlay}>
-				<Zoom in={gameStatus.gameOver} style={{ transitionDelay: '500ms' }}>
+				<Zoom in={showOverlay} timeout={1000}>
 						<Box sx={styles.content}>
 							<Box sx={styles.message}>
 								{message}
