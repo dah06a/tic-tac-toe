@@ -1,11 +1,9 @@
 import { SquareState } from "../features/game/gameSlice";
 
 export function computerPlayerChoice(g: SquareState[], c: ('X' | 'O')): number {
-    console.log('Start thinking...');
     // Computer main logic
     const blockMoves: number[] = [];
 
-    console.log('Check winning/blocking moves');
     // If a winning move is available, take it
     if (g[0] && g[1] && !g[2] && (g[0] === g[1])) {
         if (g[0] === c) {
@@ -184,21 +182,18 @@ export function computerPlayerChoice(g: SquareState[], c: ('X' | 'O')): number {
     }
 
 
-    console.log('No winning moves, so checking blocking...');
     // If blocking move is available, take it
     if (blockMoves.length) {
         return blockMoves[Math.floor(Math.random() * blockMoves.length)]
     }
 
 
-    console.log('No blocking moves, so checking if center is available...');
     // If center square is open, choose it
     if (!g[4]) {
         return 4;
     }
 
 
-    console.log('No other options, choosing random square...');
     // Otherwise, choose a square adjacent to any existing - FUTURE CONSIDERATION
     // Finally, pick a random square if none of the previous options work
     const options: number[] = [];

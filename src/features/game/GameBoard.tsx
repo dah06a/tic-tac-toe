@@ -3,40 +3,30 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { 
 	selectGameData, 
 	selectPlayerTurn, 
-	selectPlayerXs, 
+	selectPlayerXs,
+	selectResponseStatus, 
 	takeTurn, 
 	updateStatus,
 	updateScore, 
+	updateResponse,
 	SquareState,
 	GameResult,
 	GameStatus,
 } from './gameSlice';
 import { checkGameOver } from '../../utils/checkGameOver';
 import { computerPlayerChoice } from '../../utils/computerPlayerChoice';
+import { computerResponses } from '../../utils/computerResponses';
 import { mainTheme } from '../../themes/mainTheme';
 import GameSquare from './GameSquare';
 
 import Grid from '@mui/material/Grid';
 
-const styles = {
-	board: {
-		width: { xs: '90vmin', sm: '60vmin' },
-		height: { xs: '90vmin', sm: '60vmin' },
-		backgroundColor: mainTheme.palette.grey[300],
-		color: mainTheme.palette.primary.contrastText,
-		borderRadius: '10px',
-		alignItems: 'center',
-		mx: 'auto',
-	},
-	row: {
-		height: { xs: '30vmin', sm: '20vmin' },
-	}
-}
-
 export default function GameBoard() {
 	const gameData: SquareState[] = useAppSelector(selectGameData);
 	const isPlayerTurn: boolean = useAppSelector(selectPlayerTurn);
 	const isPlayerXs: boolean = useAppSelector(selectPlayerXs);
+	const isResponseDone: boolean = useAppSelector(selectResponseStatus);
+	const isGameStarted: boolean = gameData.filter(s => s !== null).length !== 0;
 	const gameOverStatus: string = checkGameOver(gameData);
 
 	const row1Data: SquareState[] = gameData.slice(0, 3);
@@ -55,21 +45,55 @@ export default function GameBoard() {
 			} else {
 				gameResult = 'computer';
 			}
+
 			const newStatus: GameStatus = { gameOver: true, result: gameResult}
 			dispatch(updateStatus(newStatus));
 
-			const playerDidWin: boolean = gameResult === 'player';
-			dispatch(updateScore({ isPlayerWinner: playerDidWin }));
-		}
-		if (!isPlayerTurn && !gameOverStatus) {
-			const computerSymbol: ('X' | 'O') = isPlayerXs ? 'O' : 'X';
-			const newPosition = computerPlayerChoice(gameData, computerSymbol);
-			dispatch(takeTurn({
-				pos: newPosition,
-				val: computerSymbol,
-			}));
+			const newPlayerWin: boolean = gameResult === 'player';
+			dispatch(updateScore({ isPlayerWinner: newPlayerWin }));
+
+			const newResponseChoices: string[] = newPlayerWin ? computerResponses.playerWin : computerResponses.computerWin;
+			const newResponseIndex = Math.floor(Math.random() * newResponseChoices.length);
+			const newResponse: string = newResponseChoices[newResponseIndex];
+			dispatch(updateResponse({ response: newResponse }));
+
+		} else {
+			if (!isGameStarted) {
+				const newResponseChoices: string[] = computerResponses.start;
+				const newResponseIndex = Math.floor(Math.random() * newResponseChoices.length);
+				const newResponse: string = newResponseChoices[newResponseIndex];
+				dispatch(updateResponse({ response: newResponse }));
+			}
+			if (!isPlayerTurn) {
+				const newResponseChoices: string[] = computerResponses.move;
+				const newResponseIndex = Math.floor(Math.random() * newResponseChoices.length);
+				const newResponse: string = newResponseChoices[newResponseIndex];
+				dispatch(updateResponse({ response: newResponse }));
+
+				const computerSymbol: ('X' | 'O') = isPlayerXs ? 'O' : 'X';
+				const newPosition = computerPlayerChoice(gameData, computerSymbol);
+				dispatch(takeTurn({
+					pos: newPosition,
+					val: computerSymbol,
+				}));
+			}
 		}
 	});
+
+	const styles = {
+		board: {
+			width: { xs: '90vmin', sm: '60vmin' },
+			height: { xs: '90vmin', sm: '60vmin' },
+			backgroundColor: mainTheme.palette.grey[300],
+			color: mainTheme.palette.primary.contrastText,
+			borderRadius: '10px',
+			alignItems: 'center',
+			mx: 'auto',
+		},
+		row: {
+			height: { xs: '30vmin', sm: '20vmin' },
+		}
+	}
 	
 	return (
 		<Grid container sx={styles.board}>

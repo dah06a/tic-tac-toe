@@ -1,11 +1,15 @@
+// import { useAppSelector } from '../../app/hooks';
+// import { selectGameStatus, selectGameData, selectPlayerTurn, SquareState } from './gameSlice';
+import GameTyper from './GameTyper';
+
 import Box from '@mui/material/Box'
-import Typewriter from 'typewriter-effect';
 import { mainTheme } from '../../themes/mainTheme';
 
 export default function GameTerminal() {
+	
 
 	const styles = {
-		terminal: {
+		terminalBox: {
 			display: 'flex',
 			width: '100%',
 			height: { xs: '25vmin', sm: '30vmin' },
@@ -15,25 +19,17 @@ export default function GameTerminal() {
 			fontSize: { xs: '1em', sm: '1.5em', md: '2em' },
 			fontFamily: 'monospace',
 			borderRadius: '10px',
+		},
+		terminalWrapper: {
+			p: 1,
 		}
 	}
 
   return (
-		<Box sx={styles.terminal}>
-			<Typewriter
-				onInit={(typewriter) => {
-						typewriter.typeString('Hello World!')
-						.callFunction(() => {
-								console.log('String typed out!');
-						})
-						.pauseFor(2500)
-						.deleteAll()
-						.callFunction(() => {
-								console.log('All strings were deleted');
-						})
-						.start();
-				}}
-			/>
+		<Box sx={styles.terminalBox}>
+			<Box sx={styles.terminalWrapper}>
+				<GameTyper />
+			</Box>
 		</Box>
 	);
 }

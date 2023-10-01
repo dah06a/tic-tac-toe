@@ -10,14 +10,18 @@ export type GameState = {
 	isPlayerTurn: boolean,
   isPlayerXs: boolean,
   score: { computer: number, player: number },
+  responseText: string,
+  isResponseDone: boolean,
 }
 
 const initialState: GameState = {
-    gameData: [null, null, null, null, null, null, null, null, null],
-    gameStatus: { gameOver: false, result: '' },
-		isPlayerTurn: true,
-    isPlayerXs: true,
-    score: { computer: 0, player: 0 },
+  gameData: [null, null, null, null, null, null, null, null, null],
+  gameStatus: { gameOver: false, result: '' },
+  isPlayerTurn: true,
+  isPlayerXs: true,
+  score: { computer: 0, player: 0 },
+  responseText: '',
+  isResponseDone: false,
 };
 
 export const gameSlice = createSlice({
@@ -35,6 +39,12 @@ export const gameSlice = createSlice({
       const scoreToUpdate = action.payload.isPlayerWinner ? 'player' : 'computer';
       state.score[scoreToUpdate]++;
     },
+    updateResponse: (state, action: PayloadAction<{response: string}>) => {
+      state.responseText = action.payload.response;
+    },
+    updateResponseStatus: (state, action: PayloadAction<{isDone: boolean}>) => {
+      state.isResponseDone = action.payload.isDone;
+    },
     newGame: (state) => {
       state.gameData = initialState.gameData;
       state.gameStatus = initialState.gameStatus;
@@ -47,12 +57,23 @@ export const gameSlice = createSlice({
   },
 });
 
-export const { takeTurn, updateStatus, updateScore, newGame, resetGame } = gameSlice.actions;
+export const { 
+  takeTurn, 
+  updateStatus, 
+  updateScore, 
+  updateResponse, 
+  updateResponseStatus, 
+  newGame, 
+  resetGame 
+} = gameSlice.actions;
 
 export const selectGameData = (state: RootState) => state.game.gameData;
 export const selectGameStatus = (state: RootState) => state.game.gameStatus;
-export const selectScore = (state: RootState) => state.game.score;
 export const selectPlayerTurn = (state: RootState) => state.game.isPlayerTurn;
 export const selectPlayerXs = (state: RootState) => state.game.isPlayerXs;
+export const selectScore = (state: RootState) => state.game.score;
+export const selectResponse = (state: RootState) => state.game.responseText;
+export const selectResponseStatus = (state: RootState) => state.game.isResponseDone;
+
 
 export default gameSlice.reducer;
