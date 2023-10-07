@@ -70,15 +70,17 @@ export default function GameBoard() {
 				const newResponse: string = newResponseChoices[newResponseIndex];
 				dispatch(updateResponse({ response: newResponse }));
 
-				const computerSymbol: ('X' | 'O') = isPlayerXs ? 'O' : 'X';
-				const newPosition = computerPlayerChoice(gameData, computerSymbol);
-				dispatch(takeTurn({
-					pos: newPosition,
-					val: computerSymbol,
-				}));
+				if (isResponseDone) {
+					const computerSymbol: ('X' | 'O') = isPlayerXs ? 'O' : 'X';
+					const newPosition = computerPlayerChoice(gameData, computerSymbol);
+					dispatch(takeTurn({
+						pos: newPosition,
+						val: computerSymbol,
+					}));
+				}
 			}
 		}
-	});
+	}, [isPlayerTurn]);
 
 	const styles = {
 		board: {

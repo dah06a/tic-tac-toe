@@ -1,5 +1,3 @@
-// import { useAppSelector } from '../../app/hooks';
-// import { selectGameStatus, selectGameData, selectPlayerTurn, SquareState } from './gameSlice';
 import GameTyper from './GameTyper';
 
 import Box from '@mui/material/Box'
@@ -22,6 +20,8 @@ export default function GameTerminal() {
 		},
 		terminalWrapper: {
 			p: 1,
+			textAlign: 'left',
+			fontFamily: 'terminal',
 		}
 	}
 

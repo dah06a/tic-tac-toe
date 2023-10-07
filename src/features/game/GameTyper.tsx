@@ -6,33 +6,40 @@ import { Typography } from '@mui/material';
 
 export default function GameTyper() {
 	const text = useAppSelector(selectResponse);
-  // const [displayText, setDisplayText] = useState('');
-	// const speed: number = 100;
+  const [displayText, setDisplayText] = useState('');
+	const speed: number = 50;
+	const dispatch = useAppDispatch();
 
-	// const dispatch = useAppDispatch();
+  useEffect(() => {
+    let index = 0;
+    let currText = "testing a string that takes up more space: ";
 
-  // useEffect(() => {
-	// 	dispatch(updateResponseStatus({ isDone: false }));
-  //   let i: number = 0;
-  //   const typingInterval = setInterval(() => {
-  //     if (i < text.length) {
-  //       setDisplayText(prevText => prevText + text.charAt(i));
-  //       i++;
-  //     } else {
-  //       clearInterval(typingInterval);
-	// 			dispatch(updateResponseStatus({ isDone: true }));
-  //     }
-  //   }, speed);
+    if (text) {
+      dispatch(updateResponseStatus({ isDone: false }));
 
-  //   return () => {
-  //     clearInterval(typingInterval);
-	// 		dispatch(updateResponseStatus({ isDone: true }));
-  //   };
-  // }, [text, speed, dispatch]);
+      let typerInterval = setInterval(() => {
+        if (index < text.length) {
+          setDisplayText((currText += text[index]));
+          index++;
+        } else {
+          index = 0;
+          currText = "testing a string that takes up more space: ";
+          dispatch(updateResponseStatus({ isDone: true }));
+          clearInterval(typerInterval);
+        }
+      }, speed);
+    }
+
+    return () => {
+      dispatch(updateResponseStatus({ isDone: true }));
+    }
+
+  }, [text]);
 
   return (
-		<Typography>
-			{text}
-		</Typography>
+    <>
+    			{displayText}
+
+    </>
 	);
 };

@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { takeTurn, SquareState, selectGameStatus, selectPlayerTurn, selectPlayerXs } from './gameSlice';
+import { takeTurn, SquareState, selectGameStatus, selectPlayerTurn, selectPlayerXs, selectResponseStatus } from './gameSlice';
 import { mainTheme } from '../../themes/mainTheme';
 
 import { SvgIconProps } from '@mui/material';
@@ -19,6 +19,7 @@ export default function GameSquare(props: SquareProps) {
 	const isGameOver: boolean = useAppSelector(selectGameStatus).gameOver;
 	const isPlayerXs: boolean = useAppSelector(selectPlayerXs);
 	const isPlayerTurn: boolean = useAppSelector(selectPlayerTurn);
+	const isResponseDone: boolean = useAppSelector(selectResponseStatus)
 	
 	const dispatch = useAppDispatch();
 
@@ -73,7 +74,7 @@ export default function GameSquare(props: SquareProps) {
 				size='large' 
 				sx={styles.iconBtn} 
 				onClick={handleTurn} 
-				disabled={isGameOver || !isPlayerTurn || status !== null}
+				disabled={isGameOver || !isPlayerTurn || !isResponseDone || status !== null}
 		>
 				{icon}
 			</IconButton>
