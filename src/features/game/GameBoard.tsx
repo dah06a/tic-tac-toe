@@ -37,25 +37,23 @@ export default function GameBoard() {
 
 	useEffect(() => {
 		if (gameOverStatus) {
+			console.log('CHECK')
 			let gameResult: GameResult;
 			if (gameOverStatus === 'tie') {
 				gameResult = 'tie';
 			} else if ((isPlayerXs && gameOverStatus === 'X') || (!isPlayerXs && gameOverStatus === 'O')) {
 				gameResult = 'player';
+				dispatch(updateScore({ isPlayerWinner: true }));
 			} else {
 				gameResult = 'computer';
+				dispatch(updateScore({ isPlayerWinner: false }));
 			}
-
 			const newStatus: GameStatus = { gameOver: true, result: gameResult}
 			dispatch(updateStatus(newStatus));
 
-			const newPlayerWin: boolean = gameResult === 'player';
-			dispatch(updateScore({ isPlayerWinner: newPlayerWin }));
-
-			const newResponseChoices: string[] = newPlayerWin ? computerResponses.playerWin : computerResponses.computerWin;
-			const newResponseIndex = Math.floor(Math.random() * newResponseChoices.length);
-			const newResponse: string = newResponseChoices[newResponseIndex];
-			dispatch(updateResponse({ response: newResponse }));
+			const newResponseSet: string[] = computerResponses[gameResult];
+			const randIndex = Math.floor(Math.random() * newResponseSet.length);
+			dispatch(updateResponse({ response: newResponseSet[randIndex] }));
 
 		} else {
 			if (!isGameStarted) {
@@ -80,7 +78,7 @@ export default function GameBoard() {
 				}
 			}
 		}
-	}, [isPlayerTurn]);
+	}, [isPlayerTurn, gameOverStatus]);
 
 	const styles = {
 		board: {

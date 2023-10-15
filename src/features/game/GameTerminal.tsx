@@ -1,10 +1,41 @@
-import GameTyper from './GameTyper';
+import  { useState, useEffect } from 'react';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import { selectResponse, updateResponseStatus } from './gameSlice';
 
 import Box from '@mui/material/Box'
 import { mainTheme } from '../../themes/mainTheme';
 
 export default function GameTerminal() {
-	
+	const text = useAppSelector(selectResponse);
+	const [displayText, setDisplayText] = useState('');
+	const speed: number = 50;
+	const dispatch = useAppDispatch();
+  
+	useEffect(() => {
+	  let index = 0;
+	  let currText = '';
+  
+	  if (text) {
+		dispatch(updateResponseStatus({ isDone: false }));
+  
+		let typerInterval = setInterval(() => {
+		  if (index < text.length) {
+			setDisplayText((currText += text[index]));
+			index++;
+		  } else {
+			index = 0;
+			currText = "testing a string that takes up more space: ";
+			dispatch(updateResponseStatus({ isDone: true }));
+			clearInterval(typerInterval);
+		  }
+		}, speed);
+	  }
+  
+	  return () => {
+		dispatch(updateResponseStatus({ isDone: true }));
+	  }
+  
+	}, [text]);
 
 	const styles = {
 		terminalBox: {
@@ -13,22 +44,21 @@ export default function GameTerminal() {
 			height: { xs: '25vmin', sm: '30vmin' },
 			mx: 'auto',
 			backgroundColor: mainTheme.palette.grey[700],
-			color: mainTheme.palette.grey[50],
-			fontSize: { xs: '1em', sm: '1.5em', md: '2em' },
-			fontFamily: 'monospace',
 			borderRadius: '10px',
 		},
 		terminalWrapper: {
 			p: 1,
 			textAlign: 'left',
-			fontFamily: 'terminal',
+			fontFamily: 'vt323',
+			fontSize: { xs: '1em', sm: '1.5em', md: '2em' },
+			color: mainTheme.palette.grey[50],
 		}
 	}
 
   return (
 		<Box sx={styles.terminalBox}>
-			<Box sx={styles.terminalWrapper}>
-				<GameTyper />
+			<Box sx={styles.terminalWrapper} className='test'>
+				{displayText}
 			</Box>
 		</Box>
 	);

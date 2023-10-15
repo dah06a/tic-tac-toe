@@ -1,8 +1,6 @@
 import  { useState, useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { selectResponse, selectResponseStatus, updateResponseStatus } from './gameSlice';
-import { Typography } from '@mui/material';
-
+import { selectResponse, updateResponseStatus } from './gameSlice';
 
 export default function GameTyper() {
 	const text = useAppSelector(selectResponse);
@@ -38,8 +36,7 @@ export default function GameTyper() {
 
   return (
     <>
-    			{displayText}
-
+      {displayText}
     </>
 	);
 };

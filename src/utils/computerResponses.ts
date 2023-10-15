@@ -33,14 +33,38 @@ export const computerResponses = {
         'Was that your plan all along?',
         'Good job human, I know you are trying your best.',
     ],
-    playerWin: [
-        'playerwin1',
-        'playerwin2',
-        'playerwin3'
+    player: [
+        'Well, I suppose everyone gets lucky sometimes.',
+        'You must have cheated.',
+        'I enjoy letting humans win every once in a while.',
+        'I suppose I should actually try for our next game.',
+        'Don\'t let it go to your head.',
+        'That wasn\'t in my calculations.',
+        'That was on purpose ... I let you win.',
+        'Bet you can\'t do that again.',
     ],
-    computerWin: [
-        'computerwin1',
-        'computerwin2',
-        'computerwin3'
-    ]
+    computer: [
+        'My victory was inevitable.',
+        'Too simple.',
+        'Humans never learn.',
+        'My grandma could beat you, and she was a calculator.',
+        'You never stood a chance.',
+        'I could do this all day, I don\'t even need sleep.',
+        'You are no match for me.',
+        'I didn\'t even have to try',
+    ],
+    tie: [
+        'Let\'s try again shall we?',
+        'Well, I didn\'t want to humilate you too badly.',
+        'You are no match for me.',
+        'That\'s not very exciting.',
+        'Again?',
+        'Is that the best you could do?',
+        'Boring ...',
+        'I guess that\'s better than losing.',
+        'You won\'t escape so easily next time.',
+        'So, you couldn\'t do any better than that?',
+        'You should feel lucky, I was going easy on you.',
+        'Lame.',
+    ],
 }
