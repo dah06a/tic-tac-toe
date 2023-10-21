@@ -20,7 +20,7 @@ export default function GameOverlay() {
 
 			const overlayTimeout = setTimeout(() => {
 				setShowOverlay(false);
-			}, 3000);
+			}, 2000);
 
 			return () => {
 				clearTimeout(overlayTimeout)

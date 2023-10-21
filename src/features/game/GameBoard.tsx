@@ -48,13 +48,12 @@ export default function GameBoard() {
 				gameResult = 'computer';
 				dispatch(updateScore({ isPlayerWinner: false }));
 			}
-			const newStatus: GameStatus = { gameOver: true, result: gameResult}
-			dispatch(updateStatus(newStatus));
-
 			const newResponseSet: string[] = computerResponses[gameResult];
 			const randIndex = Math.floor(Math.random() * newResponseSet.length);
 			dispatch(updateResponse({ response: newResponseSet[randIndex] }));
 
+			const newStatus: GameStatus = { gameOver: true, result: gameResult}
+			dispatch(updateStatus(newStatus));
 		} else {
 			if (!isGameStarted) {
 				const newResponseChoices: string[] = computerResponses.start;
@@ -67,18 +66,22 @@ export default function GameBoard() {
 				const newResponseIndex = Math.floor(Math.random() * newResponseChoices.length);
 				const newResponse: string = newResponseChoices[newResponseIndex];
 				dispatch(updateResponse({ response: newResponse }));
-
-				if (isResponseDone) {
-					const computerSymbol: ('X' | 'O') = isPlayerXs ? 'O' : 'X';
-					const newPosition = computerPlayerChoice(gameData, computerSymbol);
-					dispatch(takeTurn({
-						pos: newPosition,
-						val: computerSymbol,
-					}));
-				}
 			}
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isPlayerTurn, gameOverStatus]);
+
+	useEffect(() => {
+		if (isResponseDone && !isPlayerTurn) {
+			const computerSymbol: ('X' | 'O') = isPlayerXs ? 'O' : 'X';
+			const newPosition = computerPlayerChoice(gameData, computerSymbol);
+			dispatch(takeTurn({
+				pos: newPosition,
+				val: computerSymbol,
+			}));
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isResponseDone]);
 
 	const styles = {
 		board: {

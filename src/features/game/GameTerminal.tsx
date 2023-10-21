@@ -24,7 +24,6 @@ export default function GameTerminal() {
 			index++;
 		  } else {
 			index = 0;
-			currText = "testing a string that takes up more space: ";
 			dispatch(updateResponseStatus({ isDone: true }));
 			clearInterval(typerInterval);
 		  }
@@ -32,9 +31,10 @@ export default function GameTerminal() {
 	  }
   
 	  return () => {
-		dispatch(updateResponseStatus({ isDone: true }));
+		//dispatch(updateResponseStatus({ isDone: true }));
 	  }
   
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [text]);
 
 	const styles = {
