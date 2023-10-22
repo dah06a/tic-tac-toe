@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { 
-	selectGameData, 
+	selectGameData,
+	selectGameMode, 
 	selectPlayerTurn, 
 	selectPlayerXs,
 	selectResponseStatus, 
@@ -12,6 +13,7 @@ import {
 	SquareState,
 	GameResult,
 	GameStatus,
+	GameMode,
 } from './gameSlice';
 import { checkGameOver } from '../../utils/checkGameOver';
 import { computerPlayerChoice } from '../../utils/computerPlayerChoice';
@@ -28,6 +30,7 @@ export default function GameBoard() {
 	const isResponseDone: boolean = useAppSelector(selectResponseStatus);
 	const isGameStarted: boolean = gameData.filter(s => s !== null).length !== 0;
 	const gameOverStatus: string = checkGameOver(gameData);
+	const gameMode: GameMode = useAppSelector(selectGameMode);
 
 	const row1Data: SquareState[] = gameData.slice(0, 3);
 	const row2Data: SquareState[] = gameData.slice(3, 6);
@@ -71,9 +74,9 @@ export default function GameBoard() {
 	}, [isPlayerTurn, gameOverStatus]);
 
 	useEffect(() => {
-		if (!gameOverStatus && isResponseDone && !isPlayerTurn) {
+		if (isResponseDone && !isPlayerTurn && !gameOverStatus) {
 			const computerSymbol: ('X' | 'O') = isPlayerXs ? 'O' : 'X';
-			const newPosition = computerPlayerChoice(gameData, computerSymbol);
+			const newPosition = computerPlayerChoice(gameData, computerSymbol, gameMode);
 			dispatch(takeTurn({
 				pos: newPosition,
 				val: computerSymbol,

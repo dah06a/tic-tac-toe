@@ -1,24 +1,25 @@
 import  { useState, useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { selectResponse, updateResponseStatus } from './gameSlice';
+import { selectGameMode, selectResponse, updateResponseStatus } from './gameSlice';
 
 import Box from '@mui/material/Box'
 import { mainTheme } from '../../themes/mainTheme';
 
 export default function GameTerminal() {
 	const text = useAppSelector(selectResponse);
+	const mode = useAppSelector(selectGameMode);
 	const [displayText, setDisplayText] = useState('');
 	const speed: number = 30;
 	const dispatch = useAppDispatch();
   
 	useEffect(() => {
 	  let index = 0;
-	  let currText = '';
+	  let currText = `[${mode} mode]: `;
   
 	  if (text) {
 		dispatch(updateResponseStatus({ isDone: false }));
   
-		let typerInterval = setInterval(() => {
+		const typerInterval = setInterval(() => {
 		  if (index < text.length) {
 			setDisplayText((currText += text[index]));
 			index++;
@@ -29,11 +30,6 @@ export default function GameTerminal() {
 		  }
 		}, speed);
 	  }
-  
-	  return () => {
-		//dispatch(updateResponseStatus({ isDone: true }));
-	  }
-  
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [text]);
 

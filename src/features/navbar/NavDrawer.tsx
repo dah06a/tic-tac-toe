@@ -1,3 +1,5 @@
+import { NavItem } from './Navbar';
+
 import Drawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -6,7 +8,6 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-
 import { mainTheme } from '../../themes/mainTheme';
 
 const styles = {
@@ -32,7 +33,7 @@ const styles = {
 };
 
 type NavDrawerProps = {
-	navItems: string[];
+	navItems: NavItem[];
 	mobileOpen: boolean;
 	handleDrawerToggle: () => void;
 }
@@ -55,9 +56,9 @@ export default function NavDrawer(props: NavDrawerProps) {
 				<Divider sx={styles.divider} />
 				<List>
 					{navItems.map((item) => (
-						<ListItem key={item} disablePadding>
-							<ListItemButton sx={{ textAlign: 'center' }}>
-								<ListItemText primary={item} />
+						<ListItem key={item.title} disablePadding>
+							<ListItemButton sx={{ textAlign: 'center' }} onClick={item.clickAction}>
+								<ListItemText primary={item.title} />
 							</ListItemButton>
 						</ListItem>
 					))}

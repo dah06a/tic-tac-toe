@@ -1,5 +1,5 @@
 import { useAppSelector } from '../../app/hooks';
-import { selectScore } from './gameSlice';
+import { selectScore, selectPlayerTurn } from './gameSlice';
 import { mainTheme } from '../../themes/mainTheme';
 
 import Box from '@mui/material/Box';
@@ -8,6 +8,7 @@ import DvrIcon from '@mui/icons-material/Dvr';
 
 export default function GameScore() {
 	const score = useAppSelector(selectScore);
+	const isPlayerTurn = useAppSelector(selectPlayerTurn);
 
 	const styles = {
 		mainContainer: {
@@ -29,6 +30,14 @@ export default function GameScore() {
 		labelBox: {
 			width: '25%',
 		},
+		playerBox: {
+			color: isPlayerTurn ? mainTheme.palette.primary.main : mainTheme.palette.grey[700],
+			fontWeight: isPlayerTurn ? 'bolder' : 'bold',
+		},
+		computerBox: {
+			color: !isPlayerTurn ? mainTheme.palette.secondary.dark : mainTheme.palette.grey[700],
+			fontWeight: !isPlayerTurn ? 'bolder' : 'bold',
+		},
 		iconSize: {
 			fontSize: { xs: '1em', sm: '0.8em', md: '1.5em' },
 		},
@@ -43,7 +52,7 @@ export default function GameScore() {
 			<Box sx={[styles.mainScoreBox, styles.detailBox]}>
 					<PersonIcon sx={styles.iconSize} />
 			</Box>
-			<Box sx={[styles.mainScoreBox, styles.labelBox]}>
+			<Box sx={[styles.mainScoreBox, styles.labelBox, styles.playerBox]}>
 				Player
 			</Box>
 			<Box sx={[styles.mainScoreBox, styles.detailBox, score.player > score.computer ? styles.scoreDecoration : null]}>
@@ -55,7 +64,7 @@ export default function GameScore() {
 			<Box sx={[styles.mainScoreBox, styles.detailBox, score.player < score.computer ? styles.scoreDecoration : null]}>
 				{score.computer}
 			</Box>
-			<Box sx={[styles.mainScoreBox, styles.labelBox]}>
+			<Box sx={[styles.mainScoreBox, styles.labelBox, styles.computerBox]}>
 				Computer
 			</Box>
 			<Box sx={[styles.mainScoreBox, styles.detailBox]}>
