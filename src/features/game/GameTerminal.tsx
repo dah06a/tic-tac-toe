@@ -8,7 +8,7 @@ import { mainTheme } from '../../themes/mainTheme';
 export default function GameTerminal() {
 	const text = useAppSelector(selectResponse);
 	const [displayText, setDisplayText] = useState('');
-	const speed: number = 50;
+	const speed: number = 30;
 	const dispatch = useAppDispatch();
   
 	useEffect(() => {

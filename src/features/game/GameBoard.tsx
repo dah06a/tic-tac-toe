@@ -37,7 +37,6 @@ export default function GameBoard() {
 
 	useEffect(() => {
 		if (gameOverStatus) {
-			console.log('CHECK')
 			let gameResult: GameResult;
 			if (gameOverStatus === 'tie') {
 				gameResult = 'tie';
@@ -72,7 +71,7 @@ export default function GameBoard() {
 	}, [isPlayerTurn, gameOverStatus]);
 
 	useEffect(() => {
-		if (isResponseDone && !isPlayerTurn) {
+		if (!gameOverStatus && isResponseDone && !isPlayerTurn) {
 			const computerSymbol: ('X' | 'O') = isPlayerXs ? 'O' : 'X';
 			const newPosition = computerPlayerChoice(gameData, computerSymbol);
 			dispatch(takeTurn({

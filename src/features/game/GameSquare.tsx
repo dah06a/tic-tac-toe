@@ -10,8 +10,8 @@ import Close from '@mui/icons-material/Close';
 import TripOrigin from '@mui/icons-material/TripOrigin';
 
 type SquareProps = {
-status: SquareState;
-pos: number;
+	status: SquareState;
+	pos: number;
 }
 
 export default function GameSquare(props: SquareProps) {
