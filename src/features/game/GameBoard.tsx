@@ -6,6 +6,7 @@ import {
 	selectPlayerTurn, 
 	selectPlayerXs,
 	selectResponseStatus, 
+	selectGameRules,
 	takeTurn, 
 	updateStatus,
 	updateScore, 
@@ -29,7 +30,8 @@ export default function GameBoard() {
 	const isPlayerXs: boolean = useAppSelector(selectPlayerXs);
 	const isResponseDone: boolean = useAppSelector(selectResponseStatus);
 	const isGameStarted: boolean = gameData.filter(s => s !== null).length !== 0;
-	const gameOverStatus: string = checkGameOver(gameData);
+	const isNormalRules: boolean = useAppSelector(selectGameRules);
+	const gameOverStatus: string = checkGameOver(gameData, isNormalRules);
 	const gameMode: GameMode = useAppSelector(selectGameMode);
 
 	const row1Data: SquareState[] = gameData.slice(0, 3);
@@ -41,21 +43,33 @@ export default function GameBoard() {
 	useEffect(() => {
 		if (gameOverStatus) {
 			let gameResult: GameResult;
-			if (gameOverStatus === 'tie') {
-				gameResult = 'tie';
-			} else if ((isPlayerXs && gameOverStatus === 'X') || (!isPlayerXs && gameOverStatus === 'O')) {
-				gameResult = 'player';
-				dispatch(updateScore({ isPlayerWinner: true }));
+			if (isNormalRules) {
+				if (gameOverStatus === 'tie') {
+					gameResult = 'tie';
+				} else if ((isPlayerXs && gameOverStatus === 'X') || (!isPlayerXs && gameOverStatus === 'O')) {
+					gameResult = 'player';
+				} else {
+					gameResult = 'computer';
+				}
 			} else {
-				gameResult = 'computer';
-				dispatch(updateScore({ isPlayerWinner: false }));
+				if (gameOverStatus !== 'X') {
+					console.error('Non-X GameOver result returned for misere-rules.');
+					gameResult = 'tie';
+				} else if (isPlayerTurn) {
+					gameResult = 'player';
+				} else {
+					gameResult = 'computer';
+				}
 			}
+			dispatch(updateScore({ isPlayerWinner: gameResult === 'player' }));
+
 			const newResponseSet: string[] = computerResponses[gameResult];
 			const randIndex = Math.floor(Math.random() * newResponseSet.length);
 			dispatch(updateResponse({ response: newResponseSet[randIndex] }));
 
 			const newStatus: GameStatus = { gameOver: true, result: gameResult}
 			dispatch(updateStatus(newStatus));
+
 		} else {
 			if (!isGameStarted) {
 				const newResponseChoices: string[] = computerResponses.start;
@@ -75,7 +89,7 @@ export default function GameBoard() {
 
 	useEffect(() => {
 		if (isResponseDone && !isPlayerTurn && !gameOverStatus) {
-			const computerSymbol: ('X' | 'O') = isPlayerXs ? 'O' : 'X';
+			const computerSymbol: SquareState = isPlayerXs ? 'O' : 'X';
 			const newPosition = computerPlayerChoice(gameData, computerSymbol, gameMode);
 			dispatch(takeTurn({
 				pos: newPosition,

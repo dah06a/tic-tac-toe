@@ -1,6 +1,14 @@
 import { ReactElement } from 'react';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { takeTurn, SquareState, selectGameStatus, selectPlayerTurn, selectPlayerXs, selectResponseStatus } from './gameSlice';
+import { 
+	takeTurn, 
+	SquareState, 
+	selectGameStatus, 
+	selectGameRules, 
+	selectPlayerTurn, 
+	selectPlayerXs, 
+	selectResponseStatus,
+} from './gameSlice';
 import { mainTheme } from '../../themes/mainTheme';
 
 import { SvgIconProps } from '@mui/material';
@@ -17,6 +25,7 @@ type SquareProps = {
 export default function GameSquare(props: SquareProps) {
 	const { status, pos } = props;
 	const isGameOver: boolean = useAppSelector(selectGameStatus).gameOver;
+	const isNormalRules: boolean = useAppSelector(selectGameRules);
 	const isPlayerXs: boolean = useAppSelector(selectPlayerXs);
 	const isPlayerTurn: boolean = useAppSelector(selectPlayerTurn);
 	const isResponseDone: boolean = useAppSelector(selectResponseStatus)
@@ -24,7 +33,10 @@ export default function GameSquare(props: SquareProps) {
 	const dispatch = useAppDispatch();
 
 	function handleTurn() {
-		const playerSymbol: ('X' | 'O') = isPlayerXs ? 'X' : 'O';
+		let playerSymbol: SquareState = isPlayerXs ? 'X' : 'O';
+		if (!isNormalRules) {
+			playerSymbol = 'X';
+		}
 		dispatch(takeTurn({
 			pos: pos,
 			val: playerSymbol,
@@ -62,7 +74,7 @@ export default function GameSquare(props: SquareProps) {
 	}
 
 	let icon: ReactElement<SvgIconProps> | null = null;
-	if (status === 'X') {
+	if (status === 'X' || (status === 'O' && !isNormalRules)) {
 		icon = <Close sx={styles.icon} />;
 	} else if (status === 'O') {
 		icon = <TripOrigin sx={styles.icon} />;

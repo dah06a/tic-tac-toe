@@ -40,7 +40,7 @@ export default function GameSettingsModal(props: GameSettingsModalProps) {
 
     const rulesLabel = isNormalRules ? 'Rules = Regular Tic Tac Toe' : 'Rules = All X\'s Misère!';
     const tooltipText = isNormalRules
-        ? 'You play X\'s and the computer plays O\'s.  Get three in a row to win.'
+        ? 'You and the computer play X\'s and O\'s.  Get three in a row to win.'
         : 'Both you and the computer play X\'s. Force the computer to get three in a row to win.'
     ;
 
@@ -100,7 +100,7 @@ export default function GameSettingsModal(props: GameSettingsModalProps) {
             <DialogContent dividers>
                 <FormControl>
                     <FormLabel>Game Rules</FormLabel>  
-                    <Tooltip title={tooltipText}>
+                    <Tooltip title={tooltipText} placement='top'>
                         <FormControlLabel 
                             control={
                                 <Switch 
