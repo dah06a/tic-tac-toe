@@ -14,10 +14,9 @@ export function computerPlayerChoice(g: SquareState[], c: ('X' | 'O'), mode: Gam
 			break;
 	};
 
-	let smartChoice = Math.random() <= chance;
-	console.log(mode, smartChoice);
-	if (smartChoice) {
+	let smartChoice: boolean = Math.random() <= chance;
 		// If a winning move is available, take it
+		if (smartChoice) {
 		const blockMoves: number[] = [];
 		if (g[0] && g[1] && !g[2] && (g[0] === g[1])) {
 			if (g[0] === c) {
@@ -202,18 +201,39 @@ export function computerPlayerChoice(g: SquareState[], c: ('X' | 'O'), mode: Gam
 	}
 
 	smartChoice = Math.random() <= chance;
+	// If center square is open, choose it
 	if (smartChoice) {
-		// If center square is open, choose it
 		if (!g[4]) {
 			return 4;
 		}
 	}
+
+	smartChoice = Math.random() <= chance;
+	// If corner squares are open, choose one of them
+	if (smartChoice) {
+		const cornerMoves = [];
+		if (!g[0]) {
+			cornerMoves.push(0);
+		}
+		if (!g[2]) {
+			cornerMoves.push(2);
+		}
+		if (!g[6]) {
+			cornerMoves.push(6);
+		} 
+		if (!g[8]) {
+			cornerMoves.push(8);
+		}
+
+		if (cornerMoves.length) {
+			return cornerMoves[Math.floor(Math.random() * cornerMoves.length)]
+		}
+	}
 	
-	// Finally, pick a random square if none of the previous options work
+	// Finally, pick a random square if none of the previous options were available
 	const options: number[] = [];
 	for (let i = 0; i < g.length; i++) {
 		if (!g[i]) options.push(i);
 	}
-
 	return options[Math.floor(Math.random() * options.length)];
 }

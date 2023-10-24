@@ -1,5 +1,7 @@
+import { SquareState } from "../features/game/gameSlice";
+
 // Use 'g' for GameData array
-export function checkGameOver(g: ('X' | 'O' | null)[]) {
+export function checkGameOver(g: SquareState[]) {
     // Check patterns: top across, left side down, diagonal top-left to bottom-right
     if (g[0]) {
         if (g[0] === g[1] && g[1] === g[2]) {

@@ -9,6 +9,7 @@ export type GameState = {
 	gameData: SquareState[], 
   gameStatus: GameStatus,
   gameMode: GameMode,
+  isNormalRules: boolean,
 	isPlayerTurn: boolean,
   isPlayerXs: boolean,
   score: { computer: number, player: number },
@@ -20,6 +21,7 @@ const initialState: GameState = {
   gameData: [null, null, null, null, null, null, null, null, null],
   gameStatus: { gameOver: false, result: '' },
   gameMode: 'easy',
+  isNormalRules: true,
   isPlayerTurn: true,
   isPlayerXs: true,
   score: { computer: 0, player: 0 },
@@ -51,6 +53,9 @@ export const gameSlice = createSlice({
     updateResponseStatus: (state, action: PayloadAction<{ isDone: boolean }>) => {
       state.isResponseDone = action.payload.isDone;
     },
+    toggleRules: (state, action: PayloadAction<{ toggle: boolean }>) => {
+      state.isNormalRules = action.payload.toggle;
+    },
     newGame: (state) => {
       state.gameData = initialState.gameData;
       state.gameStatus = initialState.gameStatus;
@@ -70,6 +75,7 @@ export const {
   updateMode,
   updateResponse,
   updateResponseStatus,
+  toggleRules,
   newGame,
   resetGame
 } = gameSlice.actions;
@@ -77,6 +83,7 @@ export const {
 export const selectGameData = (state: RootState) => state.game.gameData;
 export const selectGameStatus = (state: RootState) => state.game.gameStatus;
 export const selectGameMode = (state: RootState) => state.game.gameMode;
+export const selectGameRules = (state: RootState) => state.game.isNormalRules;
 export const selectPlayerTurn = (state: RootState) => state.game.isPlayerTurn;
 export const selectPlayerXs = (state: RootState) => state.game.isPlayerXs;
 export const selectScore = (state: RootState) => state.game.score;
