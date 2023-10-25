@@ -17,7 +17,8 @@ import {
 	GameMode,
 } from './gameSlice';
 import { checkGameOver } from '../../utils/checkGameOver';
-import { computerPlayerChoice } from '../../utils/computerPlayerChoice';
+import { computerNormalChoice } from '../../utils/computerNormalChoice';
+import { computerMisereChoice } from '../../utils/computerMisereChoice';
 import { computerResponses } from '../../utils/computerResponses';
 import { mainTheme } from '../../themes/mainTheme';
 import GameSquare from './GameSquare';
@@ -90,7 +91,12 @@ export default function GameBoard() {
 	useEffect(() => {
 		if (isResponseDone && !isPlayerTurn && !gameOverStatus) {
 			const computerSymbol: SquareState = isPlayerXs ? 'O' : 'X';
-			const newPosition = computerPlayerChoice(gameData, computerSymbol, gameMode);
+			let newPosition: number = 0;
+			if (isNormalRules) {
+				newPosition = computerNormalChoice(gameData, computerSymbol, gameMode);
+			} else {
+				newPosition = computerMisereChoice(gameData, computerSymbol, gameMode);
+			}
 			dispatch(takeTurn({
 				pos: newPosition,
 				val: computerSymbol,

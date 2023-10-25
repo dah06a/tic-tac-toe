@@ -1,6 +1,6 @@
 import { SquareState, GameMode } from "../features/game/gameSlice";
 
-export function computerPlayerChoice(g: SquareState[], c: ('X' | 'O'), mode: GameMode): number {
+export function computerNormalChoice(g: SquareState[], c: ('X' | 'O'), mode: GameMode): number {
 	let chance = 0;
 	switch(mode) {
 		case 'easy':
@@ -15,8 +15,8 @@ export function computerPlayerChoice(g: SquareState[], c: ('X' | 'O'), mode: Gam
 	};
 
 	let smartChoice: boolean = Math.random() <= chance;
-		// If a winning move is available, take it
-		if (smartChoice) {
+	// If a winning move is available, take it
+	if (smartChoice) {
 		const blockMoves: number[] = [];
 		if (g[0] && g[1] && !g[2] && (g[0] === g[1])) {
 			if (g[0] === c) {

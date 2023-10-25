@@ -33,10 +33,7 @@ export default function GameSquare(props: SquareProps) {
 	const dispatch = useAppDispatch();
 
 	function handleTurn() {
-		let playerSymbol: SquareState = isPlayerXs ? 'X' : 'O';
-		if (!isNormalRules) {
-			playerSymbol = 'X';
-		}
+		const playerSymbol: SquareState = isPlayerXs ? 'X' : 'O';
 		dispatch(takeTurn({
 			pos: pos,
 			val: playerSymbol,
