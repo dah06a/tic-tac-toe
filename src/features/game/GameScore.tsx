@@ -1,5 +1,6 @@
-import { useAppSelector } from '../../app/hooks';
-import { selectScore, selectPlayerTurn } from './gameSlice';
+import { useEffect } from 'react';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import { selectScore, selectPlayerTurn, updateVictory, updateResponse } from './gameSlice';
 import { mainTheme } from '../../themes/mainTheme';
 
 import Box from '@mui/material/Box';
@@ -9,6 +10,19 @@ import DvrIcon from '@mui/icons-material/Dvr';
 export default function GameScore() {
 	const score = useAppSelector(selectScore);
 	const isPlayerTurn = useAppSelector(selectPlayerTurn);
+	const dispatch = useAppDispatch();
+	const victoryNum: number = 1;
+
+	useEffect(() => {
+		if (score.computer >= score.player + victoryNum) {
+			dispatch(updateVictory({ victory: true, result: 'computer' }));
+			dispatch(updateResponse({ response: 'I am the ultimate tic tac toe champion!'}))
+		}
+		if (score.player >= score.computer + victoryNum) {
+			dispatch(updateVictory({ victory: true, result: 'player' }));
+			dispatch(updateResponse({ response: 'How can this be?  I am ... defeated!'}))
+		}
+	}, [score]);
 
 	const styles = {
 		mainContainer: {

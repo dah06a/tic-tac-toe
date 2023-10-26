@@ -5,14 +5,17 @@ export type SquareState = 'X' | 'O' | null;
 export type GameResult = 'player' | 'computer' | 'tie' | '';
 export type GameMode = 'easy' | 'medium' | 'hard';
 export type GameStatus = { gameOver: boolean, result: GameResult };
+export type GameVictory = { victory: boolean, result: GameResult};
+export type GameScore = { computer: number, player: number };
 export type GameState = { 
 	gameData: SquareState[], 
   gameStatus: GameStatus,
+  gameVictory: GameVictory,
   gameMode: GameMode,
   isNormalRules: boolean,
 	isPlayerTurn: boolean,
   isPlayerXs: boolean,
-  score: { computer: number, player: number },
+  score: GameScore,
   responseText: string,
   isResponseDone: boolean,
 }
@@ -20,6 +23,7 @@ export type GameState = {
 const initialState: GameState = {
   gameData: [null, null, null, null, null, null, null, null, null],
   gameStatus: { gameOver: false, result: '' },
+  gameVictory: { victory: false, result: '' },
   gameMode: 'easy',
   isNormalRules: true,
   isPlayerTurn: true,
@@ -39,6 +43,9 @@ export const gameSlice = createSlice({
     },
     updateStatus: (state, action: PayloadAction<{ gameOver: boolean, result: GameResult }>) => {
       state.gameStatus = action.payload;
+    },
+    updateVictory: (state, action: PayloadAction<{ victory: boolean, result: GameResult }>) => {
+      state.gameVictory = action.payload;
     },
     updateScore: (state, action: PayloadAction<{ isPlayerWinner: boolean }>) => {
       const scoreToUpdate = action.payload.isPlayerWinner ? 'player' : 'computer';
@@ -75,6 +82,7 @@ export const {
   updateMode,
   updateResponse,
   updateResponseStatus,
+  updateVictory,
   toggleRules,
   newGame,
   resetGame
@@ -82,6 +90,7 @@ export const {
 
 export const selectGameData = (state: RootState) => state.game.gameData;
 export const selectGameStatus = (state: RootState) => state.game.gameStatus;
+export const selectGameVictory = (state: RootState) => state.game.gameVictory;
 export const selectGameMode = (state: RootState) => state.game.gameMode;
 export const selectGameRules = (state: RootState) => state.game.isNormalRules;
 export const selectPlayerTurn = (state: RootState) => state.game.isPlayerTurn;

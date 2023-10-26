@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useAppDispatch } from '../../app/hooks';
 import { resetGame } from './gameSlice';
 
