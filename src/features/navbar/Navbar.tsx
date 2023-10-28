@@ -30,14 +30,6 @@ export default function DrawerAppBar() {
 
 	const navItems: NavItem[] = [
 		{
-			title: 'Home',
-			clickAction: () => alert('Go to homepage'),
-		},
-		{
-			title: 'About',
-			clickAction: () => alert('Go to About page'),
-		},
-		{
 			title: 'Settings',
 			clickAction: handleOpenResetModal,
 		}

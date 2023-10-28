@@ -20,6 +20,9 @@ export default function GameVictoryModal() {
 		title: {
 			m: 0,
 			p: 2,
+      display: 'flex',
+      justifyContent: 'center',
+      fontSize: '32px'
 		},
 	}
 
@@ -28,7 +31,7 @@ export default function GameVictoryModal() {
 			<DialogTitle sx={styles.title}>
 				{gameVictory.result === 'player' ? 'Ultimate Victory' : 'Final Defeat'}
 			</DialogTitle>
-      
+
 			<DialogContent dividers>
         <GameTerminal />
 			</DialogContent>

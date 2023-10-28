@@ -11,7 +11,7 @@ export default function GameScore() {
 	const score = useAppSelector(selectScore);
 	const isPlayerTurn = useAppSelector(selectPlayerTurn);
 	const dispatch = useAppDispatch();
-	const victoryNum: number = 1;
+	const victoryNum: number = 5;
 
 	useEffect(() => {
 		if (score.computer >= score.player + victoryNum) {
@@ -22,6 +22,7 @@ export default function GameScore() {
 			dispatch(updateVictory({ victory: true, result: 'player' }));
 			dispatch(updateResponse({ response: 'How can this be?  I am ... defeated!'}))
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [score]);
 
 	const styles = {
