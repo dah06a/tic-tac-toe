@@ -62,7 +62,9 @@ export default function GameBoard() {
 					gameResult = 'computer';
 				}
 			}
-			dispatch(updateScore({ isPlayerWinner: gameResult === 'player' }));
+			if (gameResult !== 'tie') {
+				dispatch(updateScore({ isPlayerWinner: gameResult === 'player' }));
+			}
 
 			const newResponseSet: string[] = computerResponses[gameResult];
 			const randIndex = Math.floor(Math.random() * newResponseSet.length);
